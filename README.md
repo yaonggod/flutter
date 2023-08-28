@@ -1,5 +1,10 @@
 # flutter
 
-[dart기초](/dart_basic)
+[dart_basic](/dart_basic)
 
-[dartOOP](/dart_oop)
+[dart_oop](/dart_oop)
+
+[dart_func](/dart_functional_programming)
+
+[dart_async](/dart_async_programming)
+
