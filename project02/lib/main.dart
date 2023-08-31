@@ -1,31 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:project01/widgets/button.dart';
 
 void main() {
-  runApp(App());
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
+  const App({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color(0xFF181818),
+        backgroundColor: const Color(0xFF181818),
         body: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 40,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
           ),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SizedBox(
-              height: 80,
-            ),
+            // const SizedBox(
+            //   height: 80,
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('Hey, Siri',
+                    const Text('Hey, Siri',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 34,
@@ -40,9 +43,9 @@ class App extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(
-              height: 120,
-            ),
+            // const SizedBox(
+            //   height: 120,
+            // ),
             Text(
               'Total Balance',
               style: TextStyle(
@@ -50,10 +53,10 @@ class App extends StatelessWidget {
                 fontSize: 22,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Text(
+            const Text(
               '\$ 5 194 482',
               style: TextStyle(
                 color: Colors.white,
@@ -61,32 +64,150 @@ class App extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Row(
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.amber,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 50,
-                        vertical: 20,
-                      ),
-                      child: Text(
-                        'Transfer',
-                        style: TextStyle(
-                          fontSize: 22,
-                        ),
-                      )),
+                // Container(
+                //   decoration: BoxDecoration(
+                //     color: Colors.amber,
+                //     borderRadius: BorderRadius.circular(40),
+                //   ),
+                //   child: const Padding(
+                //       padding: EdgeInsets.symmetric(
+                //         horizontal: 50,
+                //         vertical: 20,
+                //       ),
+                //       child: Text(
+                //         'Transfer',
+                //         style: TextStyle(
+                //           fontSize: 22,
+                //         ),
+                //       )),
+                // ),
+                // Container(
+                //   decoration: BoxDecoration(
+                //     color: const Color.fromARGB(255, 47, 47, 47),
+                //     borderRadius: BorderRadius.circular(40),
+                //   ),
+                //   child: const Padding(
+                //     padding: EdgeInsets.symmetric(
+                //       horizontal: 50,
+                //       vertical: 20,
+                //     ),
+                //     child: Text(
+                //       'Request',
+                //       style: TextStyle(
+                //         fontSize: 22,
+                //         color: Colors.white,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                Button(
+                  text: 'transfer',
+                  bgColor: Colors.amber,
+                  txtColor: Colors.black,
                 ),
-                Container(
-                  child: Text('Request'),
+                Button(
+                  bgColor: Color.fromARGB(255, 47, 47, 47),
+                  text: 'request',
+                  txtColor: Colors.white,
                 ),
               ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Wallets',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 40,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  'View all',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.7),
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 47, 47, 47),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Euro',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            const Text(
+                              '6 428',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              'EUR',
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.7),
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Transform.scale(
+                      scale: 2,
+                      child: Transform.translate(
+                        offset: const Offset(-10, 15),
+                        child: Icon(
+                          Icons.euro_rounded,
+                          color: Colors.white.withOpacity(0.5),
+                          size: 80,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             )
           ]),
         ),
