@@ -12,28 +12,61 @@ class _HomeScreenState extends State<HomeScreen> {
   int totalSeconds = 1500;
   late Timer timer;
   bool isRunning = false;
+  int pomodoro = 0;
 
   void onTick(Timer timer) {
-    setState(() {
-      totalSeconds--;
-    });
+    if (totalSeconds == 0) {
+      setState(() {
+        pomodoro += 1;
+        isRunning = false;
+        totalSeconds = 1500;
+      });
+      timer.cancel();
+    } else {
+      setState(() {
+        totalSeconds--;
+      });
+    }
   }
 
   void onStartPressed() {
+    setState(() {
+      isRunning = true;
+    });
     timer = Timer.periodic(const Duration(seconds: 1), onTick);
+  }
+
+  void onPausePressed() {
+    setState(() {
+      isRunning = false;
+    });
+    timer.cancel();
+  }
+
+  void reset() {
+    setState(() {
+      isRunning = false;
+      totalSeconds = 1500;
+    });
+  }
+
+  String format(int seconds) {
+    var duration = Duration(seconds: seconds);
+    var min = duration.toString().split('.')[0].split(':')[1];
+    var sec = duration.toString().split('.')[0].split(':')[2];
+    return '$min:$sec';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: Column(
-        children: [
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: Column(children: [
           Flexible(
               flex: 1,
               child: Container(
                 alignment: Alignment.bottomCenter,
-                child: Text('$totalSeconds',
+                child: Text(format(totalSeconds),
                     style: TextStyle(
                       color: Theme.of(context).cardColor,
                       fontSize: 90,
@@ -43,15 +76,31 @@ class _HomeScreenState extends State<HomeScreen> {
           Flexible(
               flex: 3,
               child: Center(
-                child: IconButton(
-                  icon: !isRunning
-                      ? const Icon(Icons.play_circle_outlined)
-                      : const Icon(Icons.pause_circle_outline),
-                  onPressed: onStartPressed,
-                  iconSize: 120,
-                  color: Theme.of(context).cardColor,
-                ),
-              )),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                    IconButton(
+                      icon: !isRunning
+                          ? const Icon(Icons.play_circle_outlined)
+                          : const Icon(Icons.pause_circle_outline),
+                      onPressed: !isRunning ? onStartPressed : onPausePressed,
+                      iconSize: 120,
+                      color: Theme.of(context).cardColor,
+                    ),
+                    !isRunning
+                        ? IconButton(
+                            icon: const Icon(Icons.replay_outlined),
+                            onPressed: reset,
+                            iconSize: 120,
+                            color: Theme.of(context).cardColor,
+                          )
+                        : Text(
+                            'press pause if you want to reset the timer',
+                            style: TextStyle(
+                              color: Theme.of(context).cardColor,
+                            ),
+                          ),
+                  ]))),
           Flexible(
               flex: 1,
               child: Row(
@@ -79,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           Text(
-                            '0',
+                            '$pomodoro',
                             style: TextStyle(
                               fontSize: 60,
                               color: Theme.of(context)
@@ -95,8 +144,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ))
-        ],
-      ),
-    );
+        ]));
   }
 }
