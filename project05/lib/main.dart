@@ -1,9 +1,17 @@
 import "package:flutter/material.dart";
 import "package:project05/screens/home_screen.dart";
-import "package:project05/services/api_service.dart";
+import 'dart:io';
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..userAgent =
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36';
+  }
+}
 
 void main() {
-  ApiService().getTodaysToons();
   runApp(const App());
 }
 
@@ -12,7 +20,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: HomeScreen(),
     );
   }
