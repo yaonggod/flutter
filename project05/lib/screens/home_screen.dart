@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project05/models/webtoon_model.dart';
 import 'package:project05/services/api_service.dart';
+import 'package:project05/widgets/webtoon_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -19,7 +20,10 @@ class HomeScreen extends StatelessWidget {
           foregroundColor: Colors.green.shade300,
           title: const Text(
             "Today's 툰s",
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         body: FutureBuilder(
@@ -60,34 +64,8 @@ class HomeScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       itemBuilder: (context, index) {
         var webtoon = snapshot.data![index];
-        return Column(
-          children: [
-            Container(
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 10,
-                    offset: const Offset(10, 0),
-                    color: Colors.black.withOpacity(0.5),
-                  )
-                ],
-              ),
-              width: 250,
-              child: Image.network(webtoon.thumb, headers: const {
-                "User-Agent":
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
-              }),
-            ),
-            Text(
-              webtoon.title,
-              style: const TextStyle(
-                fontSize: 20,
-              ),
-            ),
-          ],
-        );
+        return Webtoon(
+            title: webtoon.title, thumb: webtoon.thumb, id: webtoon.id);
       },
       // 분리
       separatorBuilder: (context, index) {
