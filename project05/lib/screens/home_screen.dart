@@ -15,11 +15,12 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.green.shade50,
         appBar: AppBar(
+          centerTitle: true,
           elevation: 1,
           backgroundColor: Colors.white,
           foregroundColor: Colors.green.shade300,
           title: const Text(
-            "Today's 툰s",
+            "오늘의 웹툰",
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
