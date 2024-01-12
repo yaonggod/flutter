@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:project06/common/const/colors.dart';
+import 'package:project06/common/const/data.dart';
 import 'package:project06/common/layout/default_layout.dart';
 import 'package:project06/common/component/custom_text_form_field.dart';
 import 'package:project06/common/view/root_tab.dart';
@@ -23,10 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final dio = Dio();
-    final emulatorIp = "10.0.2.2:3000";
-    final simulatorIp = "127.0.0.1:3000";
-
-    final ip = Platform.isIOS ? simulatorIp : emulatorIp;
 
     return DefaultLayout(
         child: SingleChildScrollView(
@@ -74,8 +72,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton(
                 onPressed: () async {
                   // ID 비밀번호 원본
-                  // final rawString = '$username:$password';
-                  final rawString = "test@codefactory.ai:testtest";
+                  final rawString = '$username:$password';
+                  // final rawString = "test@codefactory.ai:testtest";
 
                   // Base64 인코딩
                   Codec<String, String> stringToBase64 = utf8.fuse(base64);
@@ -87,11 +85,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       options:
                           Options(headers: {'authorization': 'Basic $token'}));
 
+                  final refreshToken = response.data['refreshToken'];
+                  final accessToken = response.data['accessToken'];
+
+                  await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
+                  await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
+
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => RootTab(),)
                   );
-                  print(response.data);
-
                 },
                 child: Text(
                   "로그인",
@@ -108,15 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextButton(
                 onPressed: () async {
-                  final token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RAY29kZWZhY3RvcnkuYWkiLCJzdWIiOiJmNTViMzJkMi00ZDY4LTRjMWUtYTNjYS1kYTlkN2QwZDkyZTUiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTcwNDQ4MzUwNiwiZXhwIjoxNzA0NTY5OTA2fQ.TB6sLxIP6e6JNBvvO1TZw9iPDsFO-PB8EARP-WXPotI";
 
-                  final path = "http://$ip/auth/token";
-
-                  final response = await dio.post(path,
-                      options:
-                      Options(headers: {'authorization': 'Bearer $token'}));
-
-                  print(response.data);
                 },
                 child: Text("회원가입"),
                 style: TextButton.styleFrom(primary: PRIMARY_COLOR),
