@@ -11,3 +11,5 @@
 [token_session](/token_session)
 
 [pagination](/pagination)
+
+[json_serializable](/json_serializable)

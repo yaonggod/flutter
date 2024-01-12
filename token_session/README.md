@@ -15,11 +15,11 @@
 
 세션 생성
 
-![session](/assets/session.png)
+![session](assets/session.png)
 
 세션 사용
 
-![session2](/assets/session2.png)
+![session2](assets/session2.png)
 
 ## Token
 
@@ -34,11 +34,11 @@
 
 토큰 생성
 
-![token](/assets/token.png)
+![token](assets/token.png)
 
 토큰 사용
 
-![token2](/assets/token2.png)
+![token2](assets/token2.png)
 
 ## JWT
 
