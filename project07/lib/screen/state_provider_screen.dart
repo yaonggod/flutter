@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project07/layout/default_layout.dart';
-import 'package:project07/riverpod/state_provider_screen.dart';
+import 'package:project07/riverpod/state_provider.dart';
 
 // StateProvider 사용하기 위해 ConsumerWidget 사용, 접근하기 위해 WidgetRef도 받기
 class StateProviderScreen extends ConsumerWidget {
@@ -26,6 +26,10 @@ class StateProviderScreen extends ConsumerWidget {
                 // 현재 상태 state를 state + 1로 업데이트 -> 이게 numberProvider에 저장됨
                 ref.read(numberProvider.notifier).update((state) => state + 1);
               }, child: Text("UP")),
+              ElevatedButton(onPressed: () {
+                // state를 직접 바꾸는것도 가능
+                ref.read(numberProvider.notifier).state = ref.read(numberProvider.notifier).state - 1;
+              }, child: Text("DOWN")),
               ElevatedButton(onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => _NextScreen())
@@ -57,7 +61,11 @@ class _NextScreen extends ConsumerWidget {
               ElevatedButton(onPressed: () {
                 // 현재 상태 state를 state + 1로 업데이트 -> 이게 numberProvider에 저장됨
                 ref.read(numberProvider.notifier).update((state) => state + 1);
-              }, child: Text("UP"))
+              }, child: Text("UP")),
+              ElevatedButton(onPressed: () {
+                // state를 직접 바꾸는것도 가능
+                ref.read(numberProvider.notifier).state = ref.read(numberProvider.notifier).state - 1;
+              }, child: Text("DOWN")),
             ],
           ),
         ));
