@@ -1,19 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project06/common/const/colors.dart';
 import 'package:project06/common/const/data.dart';
 import 'package:project06/common/layout/default_layout.dart';
+import 'package:project06/common/provider/dio_provider.dart';
+import 'package:project06/common/provider/secure_storage_provider.dart';
 import 'package:project06/common/view/root_tab.dart';
 import 'package:project06/user/view/login_screen.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
@@ -23,8 +26,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void checkToken() async {
-    // dio는 바보라 exception뜨면 멈춰버린다
-    final dio = Dio();
+    final dio = ref.read(dioProvider);
+    final storage = ref.read(secureStorageProvider);
 
     // initstate에서 await할 수 없음
     final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
@@ -55,6 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void deleteToken() async {
+    final storage = ref.read(secureStorageProvider);
     await storage.deleteAll();
   }
 

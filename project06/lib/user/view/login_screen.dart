@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:dio/dio.dart';
@@ -8,23 +9,26 @@ import 'package:project06/common/const/colors.dart';
 import 'package:project06/common/const/data.dart';
 import 'package:project06/common/layout/default_layout.dart';
 import 'package:project06/common/component/custom_text_form_field.dart';
+import 'package:project06/common/provider/dio_provider.dart';
+import 'package:project06/common/provider/secure_storage_provider.dart';
 import 'package:project06/common/view/root_tab.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   String username = '';
   String password = '';
 
 
   @override
   Widget build(BuildContext context) {
-    final dio = Dio();
+    final dio = ref.read(dioProvider);
+    final storage = ref.read(secureStorageProvider);
 
     return DefaultLayout(
         child: SingleChildScrollView(

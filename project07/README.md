@@ -44,3 +44,64 @@
 
 - ref.listen
   - 반환값의 업데이트가 있을 시 특정 함수를 호출 
+
+## Code Generation
+
+```flutter pub run build_runner watch```
+
+```yaml
+dependencies:
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+dev_dependencies:
+  build_runner: ^2.4.8
+  riverpod_generator: ^2.3.9
+```
+
+일반 함수의 형태로 생성
+
+```dart
+@riverpod
+String gState(GStateRef ref) {
+  return "Hello Code Generation";
+}
+```
+
+AutoDispose 아님
+
+```dart
+@Riverpod(keepAlive: true)
+Future<int> gStateFuture2(GStateFuture2Ref ref) async {
+  await Future.delayed(Duration(seconds: 3));
+  return 11;
+}
+```
+
+family -> parameter 여러 개 넣는 provider 생성 가능 
+
+```dart
+@riverpod
+int gStateMultiply(GStateMultiplyRef ref, {
+  required int number1,
+  required int number2,
+}) {
+  return number1 * number2;
+}
+```
+
+StateNotifierProvider
+
+```dart
+@riverpod
+class GStateNotifier extends _$GStateNotifier {
+  // 초기 상태값 지정
+  @override
+  int build() {
+    return 0;
+  }
+  
+  plus() { state++; }
+  minus() { state--; }
+}
+```
+
