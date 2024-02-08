@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:project06/common/const/data.dart';
+import 'package:project06/user/provider/auth_provider.dart';
 
 class CustomInterceptor extends Interceptor {
 
   final FlutterSecureStorage storage;
-  CustomInterceptor({ required this.storage });
+  final Ref ref;
+  CustomInterceptor({ required this.storage, required this.ref });
 
   // 1. 요청을 보낼 때
   @override
@@ -75,7 +78,6 @@ class CustomInterceptor extends Interceptor {
     if (isStatus401 && !isPathRefresh) {
       final dio = Dio();
       try {
-        print('AT refresh');
 
         // RT 보내서 refresh하자
         final response = await dio.post(
@@ -100,6 +102,14 @@ class CustomInterceptor extends Interceptor {
 
       } on DioException catch (e) {
         // RT도 만료되어서 에러
+
+        // circular dependency error
+        // a -> b -> a -> b -> ...
+        // 지금 이 메소드가 dio를 build할 때 필요한 interceptor 안에 있는데
+        // usermeprovider는 dio가 필요한데 dio는 usermeprovider가 필요함
+        // dio가 필요없는 provider에서 로그아웃 로직을 끌어와서 하기
+
+        ref.read(authProvider.notifier).logout();
         return handler.reject(e);
       }
 

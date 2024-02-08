@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:project06/common/const/colors.dart';
-import 'package:project06/common/const/data.dart';
 import 'package:project06/restaurant/model/restaurant_detail_model.dart';
 import 'package:project06/restaurant/model/restaurant_model.dart';
 
 class RestaurantCard extends StatelessWidget {
+  final String id;
   final Widget image;
   final String name;
   final List<String> tags;
@@ -16,7 +16,8 @@ class RestaurantCard extends StatelessWidget {
   final String? detail;
 
   const RestaurantCard(
-      {required this.image,
+      {required this.id,
+        required this.image,
       required this.name,
       required this.tags,
       required this.ratingsCount,
@@ -32,6 +33,7 @@ class RestaurantCard extends StatelessWidget {
     bool isDetail = false, String? detail
   }) {
     return RestaurantCard(
+      id: restaurantModel.id,
       image: Image.network(
         restaurantModel.thumbUrl,
         fit: BoxFit.cover,
@@ -43,7 +45,7 @@ class RestaurantCard extends StatelessWidget {
       deliveryFee: restaurantModel.deliveryFee,
       ratings: restaurantModel.ratings,
       // 상속받은 model도 넣을 수 있다
-      isDetail: restaurantModel is RestaurantDetailModel ? true : false,
+      isDetail: isDetail,
       detail: restaurantModel is RestaurantDetailModel ? restaurantModel.detail : null,
     );
   }
@@ -52,11 +54,12 @@ class RestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (isDetail) image,
-        if (!isDetail)
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12.0),
-          child: image,
+        Hero(
+          tag: ObjectKey(id),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(isDetail ? 0 : 12.0),
+            child: image,
+          ),
         ),
         const SizedBox(
           height: 16.0,

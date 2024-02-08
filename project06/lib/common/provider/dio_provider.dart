@@ -5,12 +5,10 @@ import 'package:project06/common/provider/secure_storage_provider.dart';
 
 final dioProvider = Provider((ref) {
 
-  print('dio build');
-
   final dio = Dio();
   final storage = ref.watch(secureStorageProvider);
 
-  dio.interceptors.add(CustomInterceptor(storage: storage));
+  dio.interceptors.add(CustomInterceptor(storage: storage, ref: ref));
 
   return dio;
 });

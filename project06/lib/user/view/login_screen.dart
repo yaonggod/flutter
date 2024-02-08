@@ -1,19 +1,15 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:project06/common/const/colors.dart';
-import 'package:project06/common/const/data.dart';
 import 'package:project06/common/layout/default_layout.dart';
 import 'package:project06/common/component/custom_text_form_field.dart';
-import 'package:project06/common/provider/dio_provider.dart';
-import 'package:project06/common/provider/secure_storage_provider.dart';
-import 'package:project06/common/view/root_tab.dart';
+import 'package:project06/user/model/user_model.dart';
+import 'package:project06/user/provider/user_me_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
+  static String get routeName => 'login';
+
   const LoginScreen({super.key});
 
   @override
@@ -27,9 +23,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final dio = ref.read(dioProvider);
-    final storage = ref.read(secureStorageProvider);
-
+    final state = ref.watch(userMeProvider);
+    
     return DefaultLayout(
         child: SingleChildScrollView(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -74,30 +69,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 height: 16.0,
               ),
               ElevatedButton(
-                onPressed: () async {
-                  // ID 비밀번호 원본
-                  final rawString = '$username:$password';
-                  // final rawString = "test@codefactory.ai:testtest";
-
-                  // Base64 인코딩
-                  Codec<String, String> stringToBase64 = utf8.fuse(base64);
-                  String token = stringToBase64.encode(rawString);
-
-                  final path = "http://$ip/auth/login";
-
-                  final response = await dio.post(path,
-                      options:
-                          Options(headers: {'authorization': 'Basic $token'}));
-
-                  final refreshToken = response.data['refreshToken'];
-                  final accessToken = response.data['accessToken'];
-
-                  await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
-                  await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
-
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => RootTab(),)
-                  );
+                onPressed: state is UserModelLoading ? null :() async {
+                  ref.read(userMeProvider.notifier).login(username: username, password: password);
                 },
                 child: Text(
                   "로그인",
